@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 기본 생성자 및 setter로 설정 -->
+	<bean id="dao1" class="com.shinhan.section03.EmpDAO"></bean>
+	<bean id="service1" class="com.shinhan.section03.EmpService"
+		p:dao-ref="dao1"
+	/>
+</beans>

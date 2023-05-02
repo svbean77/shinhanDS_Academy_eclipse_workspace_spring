@@ -109,4 +109,43 @@
 			</map>
 		</property>
 	</bean>
+	
+	<!-- set, properties -->
+	<bean id="p5" class="com.shinhan.section02.People">
+		<property name="name" value="김철수"></property>
+		<property name="age" value="25"></property>
+		<property name="car" ref="car2"></property>
+		<property name="friend">
+			<set value-type="java.lang.String">
+				<value>홍길동</value>
+				<value>김영희</value>
+			</set>
+		</property>
+		<property name="myprofile">
+			<props>
+				<prop key="birthday">20000209</prop>
+				<prop key="like">sleep</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- 자동으로 의존 관계 생성: byName - Car -->
+	<!-- name="car"와 같은 이름의 bean이 있으면 자동 주입한다! 없으면 null -->
+	<!-- byType: property의 car 변수의 타입과 같은 타입의 bean이 있으면 자동 주입 -> 타입이 하나일 때만 가능! 지금은 Car가 여러개니 에러 발생 -->
+	<bean id="car" class="com.shinhan.section02.Car">
+		<constructor-arg name="model" value="XYZ모델"></constructor-arg>
+		<constructor-arg name="price" value="15000"></constructor-arg>
+	</bean>
+	<bean id="p6" class="com.shinhan.section02.People" autowire="byName">
+		<property name="name" value="김철수"></property>
+		<property name="age" value="25"></property>
+	</bean>
+	
+	<!-- 얻을 때마다 다른 객체 생성 -->
+	<!-- default: singleton -->
+	<!-- 얻을 때마다(getBean) 매번 생성하고 싶다: prototype -->
+	<bean id="p7" class="com.shinhan.section02.People" autowire="byName" scope="prototype">
+		<property name="name" value="김철수"></property>
+		<property name="age" value="25"></property>
+	</bean>
 </beans>

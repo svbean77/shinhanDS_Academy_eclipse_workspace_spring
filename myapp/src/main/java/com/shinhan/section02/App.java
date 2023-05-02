@@ -30,8 +30,46 @@ public class App {
 //		f6();
 		// list 사용 (객체)
 		
-		f7();
+//		f7();
 		// map 사용 (String, 객체)
+		
+//		f8();
+		// set, properties 사용
+		
+//		f9();
+		// autowire - byName
+		
+		f10();
+		// 같은 bean으로부터 얻은 객체는 동일 객체일까? => 같음!
+		// scope를 통해 새로운 객체 얻기 가능
+	}
+
+	private static void f10() {
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("section02.xml");
+		People p1 = ctx.getBean("p6", People.class);
+		People p2 = ctx.getBean("p6", People.class);
+		// p1과 p2는 같은 객체일까?
+		// getBean은 '얻어라'이기 때문에 동일한 객체임!
+		
+		System.out.println(p1 == p2); // 객체 주소 비교
+		
+		People p3 = ctx.getBean("p7", People.class);
+		People p4 = ctx.getBean("p7", People.class);
+		
+		System.out.println(p3 == p4);
+	}
+
+	private static void f9() {
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("section02.xml");
+		People p = ctx.getBean("p6", People.class);
+		System.out.println(p);
+	}
+
+	private static void f8() {
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("section02.xml");
+		People p = ctx.getBean("p5", People.class);
+		System.out.println(p);
+		System.out.println(p.getFriend());
 	}
 
 	private static void f7() {
