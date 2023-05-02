@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 기본 생성자 -->
+	<bean id="car1" class="com.shinhan.section02.Car"></bean>
+	
+	<!-- 매개변수 있는 생성자 -->
+	<bean id="car2" class="com.shinhan.section02.Car">
+		<constructor-arg index="0" value="ABC모델"></constructor-arg>
+		<constructor-arg index="1" value="1000"></constructor-arg>
+	</bean>
+	<!-- 매개변수 있는 생성자 -->
+	<bean id="car3" class="com.shinhan.section02.Car">
+		<constructor-arg name="model" value="DEF모델"></constructor-arg>
+		<constructor-arg name="price" value="5000"></constructor-arg>
+	</bean>
+	
+	<!-- setter -->
+	<bean id="p1" class="com.shinhan.section02.People">
+		<property name="name" value="홍길동"></property>
+		<property name="age" value="20"></property>
+		<property name="car" ref="car3"></property>
+	</bean>
+	
+	<!-- 그냥 실습 -->
+	<bean id="samsung" class="com.shinhan.section01.SamsungTV"></bean>
+	<!-- 그냥 실습 -->
+	<bean id="lg" class="com.shinhan.section01.LgTV"></bean>
+	
+	<!-- String list -->
+	<bean id="p2" class="com.shinhan.section02.People">
+		<property name="name" value="김철수"></property>
+		<property name="age" value="25"></property>
+		<property name="car" ref="car2"></property>
+		<property name="major">
+			<list>
+				<value>컴퓨터공학</value>
+				<value>정보통신공학</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 객체 list를 위한 객체 -->
+	<bean id="li1" class="com.shinhan.section02.License">
+		<property name="title" value="정보처리기사"></property>
+		<property name="year" value="2022"></property>
+	</bean>
+	<bean id="li2" class="com.shinhan.section02.License">
+		<property name="title" value="sqld"></property>
+		<property name="year" value="2023"></property>
+	</bean>
+	<!-- 객체 list -->
+	<bean id="p3" class="com.shinhan.section02.People">
+		<property name="name" value="김철수"></property>
+		<property name="age" value="25"></property>
+		<property name="car" ref="car2"></property>
+		<property name="licenseList">
+			<list>
+				<ref bean="li1"/>
+				<ref bean="li2"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 객체 map을 위한 객체 (p 방법 사용) -->
+	<bean id="book1" class="com.shinhan.section02.Book" 
+		p:title="이것이자바다"
+		p:price="30000"
+		p:kind="IT"
+	/>
+	<bean id="book2" class="com.shinhan.section02.Book" 
+		p:title="이것이Oracle"
+		p:price="25000"
+		p:kind="IT"
+	/>
+	<bean id="book3" class="com.shinhan.section02.Book" 
+		p:title="이것이자바다"
+		p:price="30000"
+		p:kind="IT"
+	/>
+	<!-- 객체 map -->
+	<bean id="p4" class="com.shinhan.section02.People">
+		<property name="name" value="김철수"></property>
+		<property name="age" value="25"></property>
+		<property name="car" ref="car2"></property>
+		<property name="books">
+			<map>
+				<entry>
+					<key>
+						<value>첫번째책</value>
+					</key>
+					<ref bean="book1"/>
+				</entry>
+				<entry>
+					<key>
+						<value>두번째책</value>
+					</key>
+					<ref bean="book2"/>
+				</entry>
+				<entry>
+					<key>
+						<value>세번째책</value>
+					</key>
+					<ref bean="book3"/>
+				</entry>
+			</map>
+		</property>
+	</bean>
+</beans>
