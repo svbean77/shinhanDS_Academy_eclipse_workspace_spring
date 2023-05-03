@@ -13,6 +13,7 @@
 		<config>src/main/resources/review.xml</config>
 		<config>src/main/resources/aop1.xml</config>
 		<config>src/main/resources/aop2.xml</config>
+		<config>src/main/resources/aop3.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>
