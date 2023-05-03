@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- XxxTarget: 주업무 -->
+	<bean id="calcTarget" class="com.firstzone.aop1.Calculator"></bean>
+	<!-- XxxAdvice: 보조업무 -->
+	<bean id="logAdvice" class="com.firstzone.aop1.LoggingAdvice"></bean>
+	<bean id="watchAdvice" class="com.firstzone.aop1.StopWatchAdvice"></bean>
+	<bean id="myAdvice" class="com.firstzone.aop1.MyAdvice"></bean>
+
+	<!--advisor = advice + pointcut -->
+	<bean id="advisor1"
+		class="org.springframework.aop.support.DefaultPointcutAdvisor">
+		<property name="advice" ref="logAdvice" />
+		<property name="pointcut">
+			<bean id="aa"
+				class="org.springframework.aop.aspectj.AspectJExpressionPointcut">
+				<property name="expression">
+					<value>execution(* add(..))</value>  <!-- 모든 add()함수에 대해 적용 -->
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="advisor2"
+		class="org.springframework.aop.support.DefaultPointcutAdvisor">
+		<property name="advice" ref="watchAdvice" />
+		<property name="pointcut">
+			<bean id="bb"
+				class="org.springframework.aop.aspectj.AspectJExpressionPointcut">
+				<property name="expression">
+					<value>execution(* divide(..))</value>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="advisor3" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+		<property name="advice" ref="myAdvice"></property>
+		<property name="pointcut">
+			<bean id="cc"
+				class="org.springframework.aop.aspectj.AspectJExpressionPointcut">
+				<property name="expression">
+					<value>execution(* add(..))</value>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- Aspect.. advisor+target = -->
+	<bean id="proxyCal"
+		class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="calcTarget" />
+		<property name="interceptorNames">
+			<list>
+				<value>advisor1</value>
+				<value>advisor2</value>
+				<value>advisor3</value>
+			</list>
+		</property>
+	</bean>
+</beans>

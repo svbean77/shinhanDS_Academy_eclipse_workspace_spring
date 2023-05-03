@@ -10,6 +10,9 @@
 		<config>src/main/resources/section02.xml</config>
 		<config>src/main/resources/section03.xml</config>
 		<config>src/main/resources/section04.xml</config>
+		<config>src/main/resources/review.xml</config>
+		<config>src/main/resources/aop1.xml</config>
+		<config>src/main/resources/aop2.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>
