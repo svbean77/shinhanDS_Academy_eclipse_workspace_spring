@@ -23,12 +23,12 @@
 				<tr>
 					<td>firstName</td>
 					<td><input type="text" name="first_name" maxlength="20"
-						value="my"></td>
+						value="홍"></td>
 				</tr>
 				<tr>
 					<td>LastName</td>
 					<td><input type="text" name="last_name" required="required"
-						value="name"></td>
+						value="길동"></td>
 				</tr>
 				<tr>
 					<td>이메일</td>
