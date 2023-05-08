@@ -9,6 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<%@ include file="../common/commonfiles.jsp" %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
@@ -82,27 +83,20 @@ $(function () {
 	
 });
 </script>
-<script>
-$(function () {
-	$(".btnDel").on("click", function () {
-		location.href = "${path}/emp/empDelete.do?empid=" + $(this).attr("data-del");
-	});
-	
-	
-	function call () {}
-});
 
-</script>
 <title>Insert title here</title>
 <style>
 </style>
 </head>
 <body>
 	<div id="container" class="container mt-3">
+	<jsp:include page="../common/header.jsp"></jsp:include>
 		<h1>직원목록</h1>
 		<hr>
 		<button onclick="location.href='empinsert.do'" type="button" class="btn btn-outline-success">직원등록(버튼, 상대)</button>
 		<a type="button" class="btn btn-outline-success" href="${path}/emp/empinsert.do">직원등록(a태그, 절대)</a>
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">직원등록(modal)</button>
+		<%@ include file="empInsertModal.jsp" %>
 		<button id="btn1">이름에 S 들어가는 직원</button>
 		<button id="btn2">짝수번째 직원</button>
 		<button id="btn3">급여가 5000 이상인 직원</button>
@@ -162,5 +156,15 @@ $(function () {
 			</tbody>
 		</table>
 	</div>
+	<script>
+$(function () {
+	
+	$(".btnDel").on("click", function () {
+		location.href = "${path}/emp/empDelete.do?empid=" + $(this).attr("data-del");
+	});
+	
+});
+
+</script>
 </body>
 </html>

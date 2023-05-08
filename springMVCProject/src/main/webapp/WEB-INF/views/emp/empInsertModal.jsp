@@ -1,20 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" %> 
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>직원 정보 등록</title>
-<%@ include file="../common/commonfiles.jsp" %>
+<title>Insert title here</title>
 </head>
 <body>
-	<div>
-	<%@ include file="../common/header.jsp" %>
-		<hr>
-		<h1>직원정보 입력</h1> 
-		<hr>
-		
-		<form action="<%=request.getContextPath() %>/emp/empinsert.do" class="mb-3" method="post">  
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">직원 등록</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="${path }/emp/empinsert.do" class="mb-3" method="post">  
 			<table>
 				<tr class="form-floating">
 					<td><label for="employee_id">직원번호</label></td>
@@ -22,11 +25,11 @@
 				</tr>
 				<tr>
 					<td>firstName</td>
-					<td><input type="text" name="first_name" maxlength="20" value="홍"></td>
+					<td><input type="text" name="first_name" maxlength="20" value="김"></td>
 				</tr>
 				<tr>
 					<td>LastName</td>
-					<td><input type="text" name="last_name" required="required" value="길동"></td>
+					<td><input type="text" name="last_name" required="required" value="철수"></td>
 				</tr>
 				<tr>
 					<td>이메일</td>
@@ -35,7 +38,7 @@
 				<tr>
 					<td>phone</td>
 					<td><input type="tel" name="phone_number"
-						value="010-1111-1111" pattern="010-[0-9]{4}-[0-9]{4}"></td>
+						value="010-9999-9999" pattern="010-[0-9]{4}-[0-9]{4}"></td>
 				</tr>
 				<tr>
 					<td>salary</td>
@@ -44,9 +47,9 @@
 				<tr>
 					<td>부서</td>
 					<td>
-					<select name="department_id">
-						<c:forEach items="${deptList}" var="dept" varStatus="status">
-							<option value="${dept.department_id}">${status.count} - ${dept.department_name}</option>
+						<select name="department_id">
+						<c:forEach items="${deptList}" var="dept">
+							<option value="${dept.department_id}">${dept.department_name}</option>
 						</c:forEach>
 					</select>
 					</td>
@@ -85,6 +88,12 @@
 				</tr>
 			</table>
 		</form>
-	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

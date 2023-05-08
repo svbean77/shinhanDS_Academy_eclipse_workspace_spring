@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+// DispatcherServlet(Front Controller)가 요청을 맏아 Controller를 찾음
 @Controller
 @RequestMapping("/first") // class level에 작성: 아래 요청들의 공통 사항
 public class SampleController {
@@ -26,6 +27,7 @@ public class SampleController {
 	}
 	
 	// model and view: mv에 view 이름을 직접 설정 후 mv를 리턴하면 됨
+	// 데이터(model)와 뷰(view)를 설정
 	@RequestMapping("/sample2") // /first/sample2
 	public ModelAndView test2() {
 		logger.info("----- info: first/sample2 요청을 받음 -----");

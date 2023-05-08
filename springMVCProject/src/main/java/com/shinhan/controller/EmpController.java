@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.shinhan.model.CompanyService;
 import com.shinhan.model.EmpService;
 import com.shinhan.vo.EmpVO;
 
@@ -28,18 +29,16 @@ public class EmpController {
 	Logger logger = LoggerFactory.getLogger(EmpController.class);
 	@Autowired
 	EmpService eService;
+	@Autowired
+	CompanyService comService;
 
-	@RequestMapping(value = "/insert.do", method = RequestMethod.GET)
-	public String registerGet(HttpServletRequest request) {
+	@RequestMapping(value = "/empinsert.do", method = RequestMethod.GET)
+	public String registerGet(Model model) {
 		// 그냥 페이지를 보여줌
-
-		// redirect 시 데이터 전달
-		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-		if (flashMap != null) {
-			Object message = flashMap.get("resultMessage");
-			logger.info("message -> " + message);
-		}
-
+		model.addAttribute("deptList", comService.deptSelectAll());
+		model.addAttribute("jobList", comService.jobSelectAll());
+		model.addAttribute("managerList", comService.managerSelectAll());
+		
 		return "emp/empInsert";
 	}
 
@@ -66,9 +65,9 @@ public class EmpController {
 	// 자바빈 객체: HTML form을 통해 들어온 Request parameter를 읽어 VO를 생성해(new) setting까지 해줌 (vo
 	// 변수 이름과 html name이 같아야 함)
 	// @ModelAttribute: view에게 데이터 전달 (model.addAttribute 방법도 있음)
-	@RequestMapping(value = "/insert.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/empinsert.do", method = RequestMethod.POST)
 	public String registerPost(@ModelAttribute("emp") EmpVO emp, String address, Model model,
-			HttpServletRequest request, HttpSession session) {
+			HttpServletRequest request, HttpSession session, RedirectAttributes redirectAttr) {
 		// 값 전달
 		logger.info("emp: " + emp);
 		logger.info("address: " + address);
@@ -88,7 +87,10 @@ public class EmpController {
 		// model.addAttribute가 request.setAttribute와 같은 의미 -> request는 굳이 set X
 		session.setAttribute("userInfo", "세션에 사용자 정보 저장");
 
-		return "emp/empInsertResult";
+		String result = eService.empInsert(emp);
+		redirectAttr.addFlashAttribute("resultMessage", result);
+
+		return "redirect:/emp/emplist.do";
 	}
 
 	// Map을 이용한 방법: @RequestParam 생략 불가능
@@ -119,18 +121,61 @@ public class EmpController {
 		logger.info("redirect 연습 -- test2에 왔다!");
 		redirectAttr.addFlashAttribute("resultMessage", "재요청합니다. insert 하세요!"); // 재요청 하면서 이 값도 가져가!
 
-		return "redirect:/emp/insert.do";
+		return "redirect:/emp/empinsert.do";
 	}
 
 	// DB 연동: emp list
-	@RequestMapping("/list")
-	public String empList(Model model) {
+	@RequestMapping("/emplist.do")
+	public String empList(Model model, HttpServletRequest request) {
+		// redirect 시 데이터 전달
+		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+		if (flashMap != null) {
+			Object message = flashMap.get("resultMessage");
+			logger.info("입력/삭제/수정 결과 message -> " + message);
+		}
+
+		// modal 창을 사용할 것이기 때문에 필요한 정보들!
+		model.addAttribute("deptList", comService.deptSelectAll());
+		model.addAttribute("jobList", comService.jobSelectAll());
+		model.addAttribute("managerList", comService.managerSelectAll());
+		
 		List<EmpVO> emplist = eService.selectAll();
 		logger.info(emplist.size() + "건");
-		
+
 		model.addAttribute("empAll", emplist);
 		
+		// ControllerAdvice 처리
+//		int a = 10 / 0;
+
 		return "emp/empSelect";
 	}
+
+	@RequestMapping(value = "/empdetail.do", method = RequestMethod.GET)
+	public String empDetail(int empid, Model model) {
+		EmpVO emp = eService.selectById(empid);
+		model.addAttribute("deptList", comService.deptSelectAll());
+		model.addAttribute("jobList", comService.jobSelectAll());
+		model.addAttribute("managerList", comService.managerSelectAll());
+		model.addAttribute("emp", emp);
+		
+		return "emp/empDetail";
+	}
 	
+	@RequestMapping(value = "/empdetail.do", method = RequestMethod.POST)
+	public String empDetailUpdate(EmpVO emp, RedirectAttributes redirectAttr) {
+		logger.info(emp.toString());
+		String result = eService.empUpdate(emp);
+		redirectAttr.addFlashAttribute("resultMessage", result);
+		
+		return "redirect:/emp/emplist.do";
+	}
+	
+	@RequestMapping("empDelete.do")
+	public String empDelete(int empid, RedirectAttributes redirectAttr) {
+		logger.info(empid + "번 직원 삭제");
+		String result = eService.empDelete(empid);
+		redirectAttr.addFlashAttribute("resultMessage", result);
+		
+		return "redirect:/emp/emplist.do";
+	}
 }

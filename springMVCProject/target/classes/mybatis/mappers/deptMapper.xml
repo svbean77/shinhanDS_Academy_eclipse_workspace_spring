@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shinhan.dept"> <!-- selectAll이라는 아이디가 많음 -> com.shinhan.dept.selectAll로 부르면 됨! namespace로 
+		그룹을 준 것!(이름공간 묶음) -->
+
+	<!-- resultType을 map으로 줄 수도 있다~ -->
+	<resultMap type="deptvo" id="deptMap1"> <!-- property: setter(java column 이름), column: db(db column 이름) -->
+		<result property="department_id" column="department_id"></result>
+		<result property="department_name" column="department_name"></result>
+		<result property="manager_id" column="manager_id"></result>
+		<result property="location_id" column="location_id"></result>
+	</resultMap>
+	<!-- 여러 건 돌아라!라는 함수를 주면 알아서 여러 건 리턴함 -->
+	<select id="selectAll" resultMap="deptMap1">
+		select * from departments
+	</select>
+
+	<select id="selectById" resultType="deptvo" parameterType="int"> <!-- parameter가 하나라면 이름 아무렇게나 줘도 됨 -->
+		select * from departments where department_id = #{aa}
+	</select>
+
+	<!-- insert, update는 resultType을 주지 않아도 알아서 실행된 건수가 리턴됨 -->
+	<insert id="insert" parameterType="deptvo"> <!-- xml 파일은 텍스트 파일임 -> 자바는 변경 시 컴파일을 해야 하지만 xml은 그대로 반영! -->
+		insert into departments(department_id, department_name, manager_id,
+		location_id)
+		values(#{department_id}, #{department_name},
+		#{manager_id}, #{location_id})
+	</insert>
+
+	<update id="update" parameterType="deptvo">
+		update departments
+		set
+		department_name=#{department_name}, manager_id=#{manager_id},
+		location_id=#{location_id}
+		where department_id=#{department_id}
+	</update>
+
+	<delete id="delete" parameterType="int">
+		delete from departments where
+		department_id=#{department_id}
+	</delete>
+</mapper>
