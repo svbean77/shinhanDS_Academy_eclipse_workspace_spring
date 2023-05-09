@@ -10,7 +10,7 @@ String company = "신한금융SW아카데미";
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="${path}/js/jquery-3.6.4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script> <!-- jquery -->
 <script>
 $(function () {
 	// ajax는 '갔다 와라!'이기 때문에 로그아웃 후 페이지 이동이 없음

@@ -1,5 +1,6 @@
 package com.shinhan.controller;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.shinhan.model.CompanyService;
 import com.shinhan.model.EmpService;
+import com.shinhan.util.DateUtil;
 import com.shinhan.vo.EmpVO;
 
 @Controller
@@ -140,7 +142,10 @@ public class EmpController {
 		model.addAttribute("jobList", comService.jobSelectAll());
 		model.addAttribute("managerList", comService.managerSelectAll());
 		
-		List<EmpVO> emplist = eService.selectAll();
+//		List<EmpVO> emplist = eService.selectByCondition2(0, "", 0.0);
+		logger.info("test");
+		List<EmpVO> emplist = eService.selectByCondition2(new Integer[] {0}, null, null, null);
+//		List<EmpVO> emplist = eService.selectAll();
 		logger.info(emplist.size() + "건");
 
 		model.addAttribute("empAll", emplist);
@@ -190,15 +195,15 @@ public class EmpController {
 	}
 	@GetMapping("/empCondition2.do") // get 방식이면 GetMapping으로 적어도 됨! (PostMaiing도 존재)
 	// day053: 조건 조회 추가
-	public String selectByCondition2(Integer deptid, String jobid, Double salary, Model model) {
+	public String selectByCondition2(@RequestParam("deptid[]")Integer[] deptid, String jobid, Double salary, Date hiredate, Model model) {
 		logger.info("deptid: " + deptid);
 		logger.info("jobid: " + jobid);
 		logger.info("salary: " + salary);
-		List<EmpVO> emplist = eService.selectByCondition2(deptid, jobid, salary);
+		logger.info("hiredate: " + hiredate);
+//		Date date = hiredate == "" ? null : DateUtil.convertToDate(hiredate);
+		List<EmpVO> emplist = eService.selectByCondition2(deptid, jobid, salary, hiredate);
 		
 		model.addAttribute("empAll", emplist);	
-		model.addAttribute("deptList", comService.deptSelectAll());
-		model.addAttribute("jobList", comService.jobSelectAll());
 		
 		return "emp/empRetrieve";
 	}

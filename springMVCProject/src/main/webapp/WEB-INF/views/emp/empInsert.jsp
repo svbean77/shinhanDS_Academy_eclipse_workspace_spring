@@ -18,7 +18,7 @@
 			<table>
 				<tr class="form-floating">
 					<td><label for="employee_id">직원번호</label></td>
-					<td><input id="employee_id" type="number" name="employee_id" placeholder="직원 번호는 시퀀스가 알아서~" value="999" readonly></td>
+					<td><input id="employee_id" type="number" name="employee_id" value="999" readonly></td>
 				</tr>
 				<tr>
 					<td>firstName</td>
@@ -30,7 +30,7 @@
 				</tr>
 				<tr>
 					<td>이메일</td>
-					<td><input type="email" name="email" required="required" value="user@email.com"></td>
+					<td><input type="email" name="email" required="required" value="user@mail.com"></td>
 				</tr>
 				<tr>
 					<td>phone</td>
@@ -45,6 +45,7 @@
 					<td>부서</td>
 					<td>
 					<select name="department_id">
+						<option value="0">부서 없음</option>
 						<c:forEach items="${deptList}" var="dept" varStatus="status">
 							<option value="${dept.department_id}">${status.count} - ${dept.department_name}</option>
 						</c:forEach>
@@ -55,6 +56,7 @@
 					<td>매니저</td>
 					<td>
 					<select name="manager_id">
+						<option value="0">매니저 없음</option>
 						<c:forEach items="${managerList}" var="manager">
 							<option value="${manager.employee_id}">${manager.first_name} ${manager.last_name }</option>
 						</c:forEach>

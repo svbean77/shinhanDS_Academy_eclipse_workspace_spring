@@ -1,5 +1,6 @@
 package com.shinhan.model;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,8 @@ public class EmpService {
 	public List<EmpVO> selectByCondition(Integer deptid, String jobid, Double salary) {
 		return empDao.selectByCondition(deptid, jobid, salary);
 	}
-	public List<EmpVO> selectByCondition2(Integer deptid, String jobid, Double salary) {
-		return empDao.selectByCondition2(deptid, jobid, salary);
+	public List<EmpVO> selectByCondition2(Integer[] deptid, String jobid, Double salary, Date hiredate) {
+		return empDao.selectByCondition2(deptid, jobid, salary, hiredate);
 	}
 
 //	public List<EmpVO> selectLAB() {

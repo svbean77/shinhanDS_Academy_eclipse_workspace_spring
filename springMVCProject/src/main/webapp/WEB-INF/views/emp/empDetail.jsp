@@ -61,6 +61,7 @@ input[name='email'],input[name='department_id'],input[name='job_id'],input[name=
 					<td>부서</td>
 					<td>
 						<select name="department_id">
+						<option value="0">부서 없음</option>
 						<c:forEach items="${deptList}" var="dept">
 							<option value="${dept.department_id}" ${emp.department_id == dept.department_id ? "selected" : ""}>${dept.department_name}</option>
 						</c:forEach>
@@ -71,6 +72,7 @@ input[name='email'],input[name='department_id'],input[name='job_id'],input[name=
 					<td>매니저</td>
 					<td>
 						<select name="manager_id">
+						<option value="0">매니저 없음</option>
 						<c:forEach items="${managerList}" var="manager">
 							<option value="${manager.employee_id}" ${emp.manager_id == manager.employee_id ? "selected" : ""}>${manager.first_name} ${manager.last_name }</option>
 						</c:forEach>

@@ -1,5 +1,7 @@
 package com.shinhan.model;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,16 +50,36 @@ public class EmpDAOMybatis {
 		return emplist;
 	}
 	
-	public List<EmpVO> selectByCondition2(Integer dept_id, String job_id, Double salary) {
-		EmpVO emp = new EmpVO();
-		emp.setDepartment_id(dept_id);
-		emp.setJob_id(job_id);
-		emp.setSalary(salary);
+	public List<EmpVO> selectByCondition2(Integer[] dept_id, String job_id, Double salary, Date hiredate) {
+//		EmpVO emp = new EmpVO();
+//		emp.setDepartment_id(dept_id);
+//		emp.setJob_id(job_id);
+//		emp.setSalary(salary);
+//		emp.setHire_date(hiredate);
+//		
+//		List<EmpVO> emplist = sqlSession.selectList(NAMESPACE + "selectByCondition2", emp);
+//		LOG.info("조건에 해당: " + emplist);
+//		return emplist;
 		
-		List<EmpVO> emplist = sqlSession.selectList(NAMESPACE + "selectByCondition2", emp);
-		LOG.info("조건에 해당: " + emplist);
-		return emplist;
+		List<EmpVO> emplistResult = new ArrayList<>();
+		List<EmpVO> emplist = null;
+		
+		for(Integer dept: dept_id) {
+			EmpVO emp = new EmpVO();
+			emp.setDepartment_id(dept);
+			emp.setJob_id(job_id);
+			emp.setSalary(salary);
+			emp.setHire_date(hiredate);
+		
+			emplist = sqlSession.selectList(NAMESPACE + "selectByCondition2", emp);
+
+			LOG.info("조건에 해당: " + emplist);
+			emplist.forEach(aa -> emplistResult.add(aa));
+		}
+		
+		return emplistResult;
 	}
+	
 
 	public int empInsert(EmpVO emp) {
 		int resultCount = sqlSession.insert(NAMESPACE + "insert", emp); // insert의 영향을 받은 row 수가 리턴됨

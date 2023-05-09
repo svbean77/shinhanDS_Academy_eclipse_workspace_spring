@@ -116,72 +116,73 @@
 		</select>
 
 		<hr>
-		<form action="${path }/emp/empCondition2.do">
-			<select name="deptid">
-				<option value="">부서</option>
-				<c:forEach items="${deptList }" var="dept">
-					<option value="${dept.department_id }">${dept.department_name }</option>
-				</c:forEach>
-			</select>
-			<select name="jobid">
-				<option value="">직책</option>
-				<c:forEach items="${jobList }" var="job">
-					<option value="${job.job_id }">${job.job_id }</option>
-				</c:forEach>
-			</select>
-			<input type="number" name="salary" placeholder="급여"/><span>이상</span>
-			<input type="submit" value="조회"/>
-		</form>
+		<select id="deptid" name="deptid">
+			<option value="">부서</option>
+			<c:forEach items="${deptList }" var="dept">
+				<option value="${dept.department_id }">${dept.department_id } - ${dept.department_name }</option>
+			</c:forEach>
+		</select>
+		<select id="jobid" name="jobid">
+			<option value="">직책</option>
+			<c:forEach items="${jobList }" var="job">
+				<option value="${job.job_id }">${job.job_id }</option>
+			</c:forEach>
+		</select>
+		<input id="salary" type="number" name="salary" placeholder="급여"/><span>이상</span>
+		<input id="hiredate" type="date" name="hiredate"/><span>이후</span>
+		<button id="conditionBtn" type="button" class="btn btn-outline-success">조회</button>
 
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>순서</th>
-					<th>직원번호</th>
-					<th>이름</th>
-					<th>성</th>
-					<th>이메일</th>
-					<th>전화번호</th>
-					<th>입사일</th>
-					<th>직책</th>
-					<th>급여</th>
-					<th>누적급여</th>
-					<th>커미션</th>
-					<th>매니저</th>
-					<th>부서</th>
-					<th>삭제</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:set var="totalSalary" value="0" />
-				<c:forEach items="${empAll}" var="emp" varStatus="status">
-					<c:set var="totalSalary" value="${totalSalary + emp.salary}" />
+		<div id="empListTable">
+			<table class="table table-hover">
+				<thead>
 					<tr>
-						<td>${status.count}</td>
-						<td><a
-							href="${path}/emp/empdetail.do?empid=${emp.employee_id}">${emp.employee_id }</a></td>
-						<td><a
-							href="${path}/emp/empdetail.do?empid=${emp.employee_id}">${emp.first_name}</a></td>
-						<td>${emp.last_name}</td>
-						<td>${emp.email}</td>
-						<td>${emp.phone_number == null ? "-" : emp.phone_number}</td>
-						<td><fmt:formatDate value="${emp.hire_date}"
-								pattern="yyyy/MM/dd" /></td>
-						<td>${emp.job_id}</td>
-						<td><fmt:formatNumber
-								value="${emp.salary == null ? 0 : emp.salary }"
-								groupingUsed="true"></fmt:formatNumber></td>
-						<td>${totalSalary}</td>
-						<td><fmt:formatNumber
-								value="${emp.commission_pct == null ? 0 : emp.commission_pct }"
-								type="percent"></fmt:formatNumber></td>
-						<td>${emp.manager_id}</td>
-						<td>${emp.department_id}</td>
-						<td><button class="btnDel" data-del="${emp.employee_id}">삭제</button></td>
+						<th>순서</th>
+						<th>직원번호</th>
+						<th>이름</th>
+						<th>성</th>
+						<th>이메일</th>
+						<th>전화번호</th>
+						<th>입사일</th>
+						<th>직책</th>
+						<th>급여</th>
+						<th>누적급여</th>
+						<th>커미션</th>
+						<th>매니저</th>
+						<th>부서</th>
+						<th>삭제</th>
 					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					<c:set var="totalSalary" value="0" />
+					<c:forEach items="${empAll}" var="emp" varStatus="status">
+						<c:set var="totalSalary" value="${totalSalary + emp.salary}" />
+						<tr>
+							<td>${status.count}</td>
+							<td><a
+								href="${path}/emp/empdetail.do?empid=${emp.employee_id}">${emp.employee_id }</a></td>
+							<td><a
+								href="${path}/emp/empdetail.do?empid=${emp.employee_id}">${emp.first_name}</a></td>
+							<td>${emp.last_name}</td>
+							<td>${emp.email}</td>
+							<td>${emp.phone_number == null ? "-" : emp.phone_number}</td>
+							<td><fmt:formatDate value="${emp.hire_date}"
+									pattern="yyyy/MM/dd" /></td>
+							<td>${emp.job_id}</td>
+							<td><fmt:formatNumber
+									value="${emp.salary == null ? 0 : emp.salary }"
+									groupingUsed="true"></fmt:formatNumber></td>
+							<td>${totalSalary}</td>
+							<td><fmt:formatNumber
+									value="${emp.commission_pct == null ? 0 : emp.commission_pct }"
+									type="percent"></fmt:formatNumber></td>
+							<td>${emp.manager_id}</td>
+							<td>${emp.department_id}</td>
+							<td><button class="btnDel" data-del="${emp.employee_id}">삭제</button></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</div>
 	</div>
 	<script>
 		$(function() {
@@ -194,6 +195,25 @@
 					});
 
 		});
+	</script>
+	<script>
+	$("#conditionBtn").on("click", function () {
+		var deptid = $("#deptid").val();
+		var jobid = $("#jobid").val();
+		var salary = $("#salary").val();
+		var hiredate = $("#hiredate").val() || undefined; // undefined가 넘어갈 때 null로 넘어감
+		
+		$.ajax({
+			url: "empCondition2.do", // ${path}/emp/empCondition2.do
+			data: {"deptid": deptid, "jobid": jobid, "salary": salary, "hiredate": hiredate},
+			success: function (result) {
+				$("#empListTable").html(result);
+			},
+			error: function (message) {
+				$("#empListTable").html(message);
+			}
+		});
+	});
 	</script>
 </body>
 </html>
