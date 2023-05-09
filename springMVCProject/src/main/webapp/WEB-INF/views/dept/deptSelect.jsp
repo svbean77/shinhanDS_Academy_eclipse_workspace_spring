@@ -38,7 +38,7 @@
 						href="${path}/dept/deptdetail.do?deptid=${dept.department_id }">${dept.department_id }</a></td>
 					<td><a
 						href="${path}/dept/deptdetail.do?deptid=${dept.department_id }">${dept.department_name }</a></td>
-					<td>${dept.manager_id == 0 ? "X" : dept.manager_id }</td>
+					<td>${dept.manager_id == null ? "-" : dept.manager_id }</td>
 					<td>${dept.location_id }</td>
 					<td><button class="btnDel" data-del="${dept.department_id }">삭제</button></td>
 				</tr>

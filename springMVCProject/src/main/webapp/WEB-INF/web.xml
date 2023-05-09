@@ -53,7 +53,7 @@
 
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
-		<url-pattern>/</url-pattern>
+		<url-pattern>/</url-pattern> <!-- /을 요청하면 (모든 요청) 항상 DispatcherServlet으로 이동 (FrontController) -->
 	</servlet-mapping>
 
 </web-app>

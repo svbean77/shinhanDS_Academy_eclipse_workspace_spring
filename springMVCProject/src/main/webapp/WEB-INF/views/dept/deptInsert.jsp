@@ -42,7 +42,7 @@ h1 {
 				<tr>
 					<td>매니저</td>
 					<td><select name="manager_id">
-					<option value="0">매니저 없음</option>
+					<option value="">매니저 없음</option>
 							<c:forEach items="${empList}" var="emp">
 								<option value="${emp.employee_id}">${emp.first_name}
 									${emp.last_name }</option>

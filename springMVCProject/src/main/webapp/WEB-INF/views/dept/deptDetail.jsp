@@ -48,7 +48,7 @@ input[name='email'], input[name='department_id'], input[name='job_id'],
 				<tr>
 					<td>매니저</td>
 					<td><select name="manager_id">
-							<option value="0" ${empList == null ? "selected" : ""}>매니저 없음</option>
+							<option value="" ${empList == null ? "selected" : ""}>매니저 없음</option>
 							<c:forEach items="${empList}" var="emp">
 								<option value="${emp.employee_id}"
 									${emp.employee_id == dept.manager_id ? "selected" : ""}>${emp.first_name}

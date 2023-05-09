@@ -10,12 +10,13 @@ import com.shinhan.vo.EmpVO;
 @Service // @Component + Service
 public class EmpService {
 	@Autowired // EmpDAO 타입이 같으면 bean을 생성해 자동 주입 해준다
-	EmpDAO empDao;
+//	EmpDAO empDao;
+	EmpDAOMybatis empDao;
 
 
-	public EmpVO getSalary(int empid) {
-		return empDao.getSalary(empid);
-	}
+//	public EmpVO getSalary(int empid) {
+//		return empDao.getSalary(empid);
+//	}
 
 
 	public List<EmpVO> selectAll() {
@@ -30,15 +31,18 @@ public class EmpService {
 		return empDao.selectByDept(deptid);
 	}
 
-	public List<EmpVO> selectByCondition(int deptid, String jobid, double salary) {
+	public List<EmpVO> selectByCondition(Integer deptid, String jobid, Double salary) {
 		return empDao.selectByCondition(deptid, jobid, salary);
 	}
-
-	public List<EmpVO> selectLAB() {
-		List<EmpVO> emplist = empDao.selectLAB();
-		System.out.println("[EmpService] 실행 건수: " + emplist.size());
-		return emplist;
+	public List<EmpVO> selectByCondition2(Integer deptid, String jobid, Double salary) {
+		return empDao.selectByCondition2(deptid, jobid, salary);
 	}
+
+//	public List<EmpVO> selectLAB() {
+//		List<EmpVO> emplist = empDao.selectLAB();
+//		System.out.println("[EmpService] 실행 건수: " + emplist.size());
+//		return emplist;
+//	}
 
 	public String empInsert(EmpVO emp) {
 		int result = empDao.empInsert(emp);

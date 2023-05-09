@@ -3,6 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+	<!-- null이 들어오면 자동으로 null로 설정해줌! (전체적으로 설정하지 않으면 null이 들어갈 값마다 mapper.xml에서 
+		설정해야 함! -->
 	<settings>
 		<setting name="logImpl" value="LOG4J" />
 		<setting name="jdbcTypeForNull" value="NULL" />

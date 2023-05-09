@@ -14,7 +14,7 @@ import com.shinhan.vo.DeptVO;
 public class DeptDAOMybatis {
 	@Autowired
 	SqlSession sqlSession;
-	String namespace = "com.shinhan.dept.";
+	String namespace = "co.kr.firstzone.dept.";
 	Logger logger = LoggerFactory.getLogger(DeptDAOMybatis.class);
 
 	public List<DeptVO> deptList() {

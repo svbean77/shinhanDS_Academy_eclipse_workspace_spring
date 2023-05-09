@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shinhan.dept"> <!-- selectAll이라는 아이디가 많음 -> com.shinhan.dept.selectAll로 부르면 됨! namespace로 
+<mapper namespace="co.kr.firstzone.dept"> <!-- selectAll이라는 아이디가 많음 -> com.shinhan.dept.selectAll로 부르면 됨! namespace로 
 		그룹을 준 것!(이름공간 묶음) -->
 
 	<!-- resultType을 map으로 줄 수도 있다~ -->
@@ -14,7 +14,7 @@
 	</resultMap>
 	<!-- 여러 건 돌아라!라는 함수를 주면 알아서 여러 건 리턴함 -->
 	<select id="selectAll" resultMap="deptMap1">
-		select * from departments
+		select * from departments order by department_id desc
 	</select>
 
 	<select id="selectById" resultType="deptvo" parameterType="int"> <!-- parameter가 하나라면 이름 아무렇게나 줘도 됨 -->

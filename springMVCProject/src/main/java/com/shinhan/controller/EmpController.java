@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -177,5 +178,28 @@ public class EmpController {
 		redirectAttr.addFlashAttribute("resultMessage", result);
 		
 		return "redirect:/emp/emplist.do";
+	}
+	
+	@GetMapping("/empCondition.do") // get 방식이면 GetMapping으로 적어도 됨! (PostMaiing도 존재)
+	// day053: 조건 조회 추가
+	public String selectByCondition(Integer deptid, String jobid, Double salary, Model model) {
+		List<EmpVO> emplist = eService.selectByCondition(deptid, jobid, salary);
+		model.addAttribute("empAll", emplist);		
+		
+		return "emp/empRetrieve";
+	}
+	@GetMapping("/empCondition2.do") // get 방식이면 GetMapping으로 적어도 됨! (PostMaiing도 존재)
+	// day053: 조건 조회 추가
+	public String selectByCondition2(Integer deptid, String jobid, Double salary, Model model) {
+		logger.info("deptid: " + deptid);
+		logger.info("jobid: " + jobid);
+		logger.info("salary: " + salary);
+		List<EmpVO> emplist = eService.selectByCondition2(deptid, jobid, salary);
+		
+		model.addAttribute("empAll", emplist);	
+		model.addAttribute("deptList", comService.deptSelectAll());
+		model.addAttribute("jobList", comService.jobSelectAll());
+		
+		return "emp/empRetrieve";
 	}
 }

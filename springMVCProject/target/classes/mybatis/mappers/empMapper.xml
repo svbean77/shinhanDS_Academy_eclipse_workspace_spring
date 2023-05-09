@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.kr.firstzone.emp">
+	<select id="selectAll" resultType="com.shinhan.vo.EmpVO">
+		select * from employees order
+		by 1 desc
+	</select>
+
+	<select id="selectById" resultType="empvo" parameterType="int">
+		select
+		* from employees where employee_id=#{employee_id}
+	</select>
+
+	<select id="selectByDept" resultType="empvo" parameterType="int">
+		select * from employees where department_id=#{department_id}
+	</select>
+
+	<select id="selectByCondition" resultType="empvo"
+		parameterType="map"> <!-- 객체 중 일부 속성만 사용할 것이기 때문에 map이 효율적! -->
+		select * from employees
+		where department_id=#{deptid}
+		and
+		job_id=#{jobid}
+		and salary>=#{salary}
+	</select>
+
+	<!-- 위처럼 조건을 다 넣는 것이 아니고 각 조건이 있으면 설정하고자 한다 -->
+	<!-- where절을 넣고 항상 and로 연결해버리기 위해 where 1=1 조건을 준다. (항상 만족) -->
+	<select id="selectByCondition2" resultType="empvo"
+		parameterType="empvo">
+		select * from employees
+		where 1 = 1 
+
+		<if test="department_id != null and department_id != 0">
+			and department_id=#{department_id}
+		</if>
+		<if test="job_id != null and job_id != ''">
+			and job_id=#{job_id}
+		</if>
+		<if test="salary != null and salary != 0">
+			and salary>=#{salary}
+		</if>
+	</select>
+
+	<insert id="insert" parameterType="empvo">
+		insert into
+		employees(employee_id, first_name, last_name, job_id, manager_id,
+		department_id,
+		hire_date, phone_number, salary, email, commission_pct)
+		values(seq_employee.nextval, #{first_name}, #{last_name}, #{job_id},
+		#{manager_id}, #{department_id},
+		#{hire_date}, #{phone_number},
+		#{salary}, #{email}, #{commission_pct})
+	</insert>
+
+	<update id="update" parameterType="empvo">
+		update employees
+		set
+		first_name=#{first_name}, last_name=#{last_name}, job_id=#{job_id},
+		manager_id=#{manager_id}, department_id=#{department_id},
+		hire_date=#{hire_date}, phone_number=#{phone_number},
+		salary=#{salary}, email=#{email}, commission_pct=#{commission_pct}
+		where employee_id=#{employee_id}
+	</update>
+
+	<delete id="delete" parameterType="int">
+		delete from employees
+		where
+		employee_id=#{employee_id}
+	</delete>
+</mapper>

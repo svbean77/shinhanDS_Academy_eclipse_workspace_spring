@@ -18,14 +18,15 @@
 		name="username" value="hr" /> <property name="password" value="hr" /> </bean> -->
 
 	<!-- 방법 3: Connection Pooling 이용 (JNDI) -->
-	 <!-- DB의 id와 property의 ref 이름이 같아야 함 -->
+	<!-- DB의 id와 property의 ref 이름이 같아야 함 -->
+	<!-- context.xml에 resource로 정의한 id 이름을 jndi-name으로 가져오면 됨 -->
 	<jee:jndi-lookup id="dataSource"
 		jndi-name="jdbc/myoracle" resource-ref="true" />
 
-	<!-- sqlSessionFactory: 설정에 의해 sqlSession을 생성 -->
+	<!-- sqlSessionFactory: 설정에 의해 sqlSession을 생성 --> 
 	<bean id="sqlSessionFactory"
 		class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"></property> <!-- DB의 id와 property의 ref 이름이 같아야 함 -->
+		<property name="dataSource" ref="dataSource"></property>  <!-- DB의 id와 property의 ref 이름이 같아야 함 -->
 		<property name="configLocation"
 			value="classpath:mybatis/sqlMapConfig.xml" />
 		<property name="mapperLocations"
