@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Aspect
 public class LogAdvice {
-	@Pointcut("execution(* select*(..))")
+	@Pointcut("execution(* com.shinhan.model.*DAO*.select*(..))")
 	public void cut1() {}
 	
 	

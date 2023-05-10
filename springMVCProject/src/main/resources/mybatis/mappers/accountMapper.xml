@@ -11,6 +11,6 @@
   <update id="update2">
    update cust_account
    set balance = balance - #{amount}
-   where accountNo = #{accountNo}; <!-- 오류문장으로 변경함(transaction연습) -->
+   where accountNo = #{accountNo} <!-- 오류문장으로 변경함(transaction연습) -->
   </update>
 </mapper>

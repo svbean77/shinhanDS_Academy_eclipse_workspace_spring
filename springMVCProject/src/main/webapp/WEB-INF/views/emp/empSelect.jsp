@@ -91,6 +91,17 @@
 <body>
 	<div id="container" class="container mt-3">
 		<jsp:include page="../common/header.jsp"></jsp:include>
+		<!-- day054: restful 방식 연습 -->
+		<div>
+			<input type="number" id="empid" value="100"/>
+			<button id="restBtn1">1건의 직원 조회</button>: 
+			<span id="empResult1"></span>
+		</div>
+		<div>
+			<button id="restBtn2">모든 직원 조회</button>: 
+			<span id="empResult2"></span>
+		</div>
+		<hr>
 		<h1>직원목록</h1>
 		<hr>
 		<button onclick="location.href='empinsert.do'" type="button"
@@ -166,6 +177,7 @@
 						<th>매니저</th>
 						<th>부서</th>
 						<th>삭제</th>
+						<th>삭제(rest)</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -194,6 +206,7 @@
 							<td>${emp.manager_id}</td>
 							<td>${emp.department_id}</td>
 							<td><button class="btnDel" data-del="${emp.employee_id}">삭제</button></td>
+							<td><button class="restBtn5" data-del="${emp.employee_id}">삭제rest</button></td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -248,6 +261,52 @@
 				$("#empListTable").html(message);
 			}
 		});
+	});
+	</script>
+	<script>
+	/* da054: restful 방식 연습 */
+	// 값만 넘어감 -> 보안상 안전! (넘어간 값이 무엇에 관한 값인지 모름)
+	$("#restBtn1").on("click", function () {
+		var empid = $("#empid").val();
+		$.ajax({
+			url: "${path}/restemp/empdetail.do/" + empid,
+			success: function (result) {
+				console.log(result);
+				var name = result.first_name + " " + result.last_name;
+				$("#empResult1").html(name);
+			},
+			error: function (message) {}
+		});
+	});
+	
+	$("#restBtn2").on("click", function () {
+		$.ajax({
+			url: "${path}/restemp/emplist.do/",
+			success: function (result) {
+				console.log(result);
+				var output = "<ul>";
+				
+				$.each(result["emplist"], function (idx, item) {
+					output += "<li>" + item.first_name + " " + item.last_name + "</li>";
+				});
+				$("#empResult2").html(output + "</ul>");
+			},
+			error: function (message) {}
+		});
+	});
+	
+	$(".restBtn5").on("click", function () {
+		var empid = $(this).attr("data-del");
+		console.log(empid);
+		$.ajax({
+			url: "${path}/restemp/empDelete.do/" + empid,
+			method: "delete",
+			success: function (result) {
+				alert(result);
+				location.href = "${path}/emp/emplist.do/"
+			}
+		});
+		
 	});
 	</script>
 </body>

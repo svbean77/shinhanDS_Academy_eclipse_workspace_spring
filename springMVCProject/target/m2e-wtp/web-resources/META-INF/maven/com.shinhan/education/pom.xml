@@ -15,6 +15,12 @@
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 	</properties>
 	<dependencies>
+		<!-- JSON 사용하기 위한 라이브러리 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.12.2</version>
+		</dependency>
 		<!-- AspectJ: AOP 사용하기 위한 라이브러리 -->
 		<dependency>
 			<groupId>org.aspectj</groupId>

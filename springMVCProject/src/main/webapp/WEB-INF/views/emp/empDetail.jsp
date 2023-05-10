@@ -27,7 +27,7 @@ input[name='email'],input[name='department_id'],input[name='job_id'],input[name=
 		<%@ include file="../common/header.jsp" %>
 		<h1>직원 상세 정보</h1>
 		<hr>
-		<form action="<%=request.getContextPath() %>/emp/empdetail.do" class="mb-3" method="post"> 
+		<form action="<%=request.getContextPath() %>/emp/empdetail.do" class="mb-3" method="post" id="myfrm"> 
 			<table>
 				<tr class="form-floating">
 					<td><label for="employee_id">직원번호</label></td>
@@ -98,10 +98,41 @@ input[name='email'],input[name='department_id'],input[name='job_id'],input[name=
 					</td>
 				</tr>
 				<tr style="text-align: center;">
-					<td colspan="2"><input type="submit" value="정보 수정"></td>
+					<td>
+						<input type="submit" value="정보 수정">
+						<input id="restBtn3" type="button" value="정보 수정(rest)">
+					</td>
 				</tr>
 			</table>
 		</form>
+		
+		<p id="updateResult"></p>
 	</div>
+	<script>
+	$("#restBtn3").on("click", function () {
+		/* 보내야 할 정보가 너무 많으면 data로 전송 */
+		
+		var arr = $("#myfrm").serializeArray(); // form 입력 값들을 list 형태로 줌
+		var obj = {};
+		$.each(arr, function (idx, item) {
+			obj[item.name] = item.value;
+		});
+
+		console.log(arr);
+		console.log(obj);
+		
+		$.ajax({
+			url: "${path}/restemp/empdetail.do",
+			data: JSON.stringify(obj),
+			method: "put",
+			contentType: "application/json", /* contentType: 보내는 데이터의 형식 (json이다.) */
+			success: function (result) {
+				console.log(result);
+				$("#updateResult").html(result);
+			},
+			error: function (message) {}
+		});
+	});
+	</script>
 </body>
 </html>

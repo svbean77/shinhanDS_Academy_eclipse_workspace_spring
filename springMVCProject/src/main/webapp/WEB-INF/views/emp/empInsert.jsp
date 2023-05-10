@@ -14,7 +14,7 @@
 		<h1>직원정보 입력</h1> 
 		<hr>
 		
-		<form action="<%=request.getContextPath() %>/emp/empinsert.do" class="mb-3" method="post">  
+		<form action="<%=request.getContextPath() %>/emp/empinsert.do" class="mb-3" method="post" id="myfrm2">  
 			<table>
 				<tr class="form-floating">
 					<td><label for="employee_id">직원번호</label></td>
@@ -83,10 +83,36 @@
 					</td>
 				</tr>
 				<tr style="text-align: center;">
-					<td colspan="2"><input type="submit" value="직원등록"></td>
+					<td>
+						<input type="submit" value="직원등록">
+						<input id="restBtn4" type="button" value="직원등록(rest)">
+					</td>
 				</tr>
 			</table>
 		</form>
+		<div id="insertResult"></div>
 	</div>
+	<script>
+	$("#restBtn4").on("click", function () {
+		var arr = $("#myfrm2").serializeArray();
+		console.log(arr);
+		var obj = {};
+		$.each(arr, function (idx, item) {
+			obj[item.name] = item.value;
+		});
+		console.log(obj);
+		
+		$.ajax({
+			url: "${path}/restemp/empinsert.do",
+			method: "post",
+			data: JSON.stringify(obj),
+			contentType: "application/json",
+			success: function (result) {
+				$("#insertResult").html(result);
+			},
+			error: function (message) {}
+		});
+	});
+	</script>
 </body>
 </html>
