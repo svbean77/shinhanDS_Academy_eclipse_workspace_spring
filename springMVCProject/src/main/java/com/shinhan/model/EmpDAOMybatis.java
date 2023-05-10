@@ -2,6 +2,7 @@ package com.shinhan.model;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,7 @@ public class EmpDAOMybatis {
 		return emplist;
 	}
 	
+	// 방법 1: vo를 이용해 for문 돌기 
 	public List<EmpVO> selectByCondition2(Integer[] dept_id, String job_id, Double salary, Date hiredate) {
 //		EmpVO emp = new EmpVO();
 //		emp.setDepartment_id(dept_id);
@@ -63,9 +65,15 @@ public class EmpDAOMybatis {
 		
 		List<EmpVO> emplistResult = new ArrayList<>();
 		List<EmpVO> emplist = null;
+
+		// 내 방법: 전체 검색의 value를 0이 아닌 ""로 주면 이렇게 해야 함 -> 모두 조회해야 하기 때문!
+//		if(Arrays.toString(dept_id) == "[]") {
+//			dept_id = new Integer[] {0};
+//		}
 		
 		for(Integer dept: dept_id) {
 			EmpVO emp = new EmpVO();
+			
 			emp.setDepartment_id(dept);
 			emp.setJob_id(job_id);
 			emp.setSalary(salary);
@@ -80,6 +88,20 @@ public class EmpDAOMybatis {
 		return emplistResult;
 	}
 	
+	// 방법 2: map을 이용해 넣기
+	public List<EmpVO> selectByCondition3(Integer[] dept_id, String job_id, Double salary, Date hiredate) {
+		Map<String, Object> mapData = new HashMap<>();
+		if(dept_id.length == 0 || dept_id[0] == 0) dept_id = null;
+		
+		mapData.put("deptid", dept_id); 
+		mapData.put("jobid", job_id);
+		mapData.put("salary", salary);
+		mapData.put("hiredate", hiredate);
+
+		List<EmpVO> emplist = sqlSession.selectList(NAMESPACE + "selectByCondition3", mapData);
+		LOG.info("조건에 해당: " + emplist);
+		return emplist;
+	}
 
 	public int empInsert(EmpVO emp) {
 		int resultCount = sqlSession.insert(NAMESPACE + "insert", emp); // insert의 영향을 받은 row 수가 리턴됨

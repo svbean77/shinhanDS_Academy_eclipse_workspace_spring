@@ -116,21 +116,37 @@
 		</select>
 
 		<hr>
-		<select id="deptid" name="deptid">
-			<option value="">부서</option>
+		<select id="deptid2" name="deptid2" multiple="multiple">
+			<option value="0">부서</option>
 			<c:forEach items="${deptList }" var="dept">
 				<option value="${dept.department_id }">${dept.department_id } - ${dept.department_name }</option>
 			</c:forEach>
 		</select>
-		<select id="jobid" name="jobid">
+		<select id="jobid2" name="jobid2">
 			<option value="">직책</option>
 			<c:forEach items="${jobList }" var="job">
 				<option value="${job.job_id }">${job.job_id }</option>
 			</c:forEach>
 		</select>
-		<input id="salary" type="number" name="salary" placeholder="급여"/><span>이상</span>
-		<input id="hiredate" type="date" name="hiredate"/><span>이후</span>
-		<button id="conditionBtn" type="button" class="btn btn-outline-success">조회</button>
+		<input id="salary2" type="number" name="salary2" placeholder="급여"/><span>이상</span>
+		<input id="hiredate2" type="date" name="hiredate2"/><span>이후</span>
+		<button id="conditionBtn2" type="button" class="btn btn-outline-success">조회2 (for)</button>
+		<hr>
+		<select id="deptid3" name="deptid3" multiple="multiple">
+			<option value="0">부서</option>
+			<c:forEach items="${deptList }" var="dept">
+				<option value="${dept.department_id }">${dept.department_id } - ${dept.department_name }</option>
+			</c:forEach>
+		</select>
+		<select id="jobid3" name="jobid3">
+			<option value="">직책</option>
+			<c:forEach items="${jobList }" var="job">
+				<option value="${job.job_id }">${job.job_id }</option>
+			</c:forEach>
+		</select>
+		<input id="salary3" type="number" name="salary3" placeholder="급여"/><span>이상</span>
+		<input id="hiredate3" type="date" name="hiredate3"/><span>이후</span>
+		<button id="conditionBtn3" type="button" class="btn btn-outline-success">조회3 (map)</button>
 
 		<div id="empListTable">
 			<table class="table table-hover">
@@ -197,14 +213,33 @@
 		});
 	</script>
 	<script>
-	$("#conditionBtn").on("click", function () {
-		var deptid = $("#deptid").val();
-		var jobid = $("#jobid").val();
-		var salary = $("#salary").val();
-		var hiredate = $("#hiredate").val() || undefined; // undefined가 넘어갈 때 null로 넘어감
+	$("#conditionBtn2").on("click", function () {
+		var deptid = $("#deptid2").val();
+		var jobid = $("#jobid2").val();
+		var salary = $("#salary2").val();
+		var hiredate = $("#hiredate2").val() || undefined; // undefined가 넘어갈 때 null로 넘어감
 		
+		console.log(deptid);
 		$.ajax({
 			url: "empCondition2.do", // ${path}/emp/empCondition2.do
+			data: {"deptid": deptid, "jobid": jobid, "salary": salary, "hiredate": hiredate},
+			success: function (result) {
+				$("#empListTable").html(result);
+			},
+			error: function (message) {
+				$("#empListTable").html(message);
+			}
+		});
+	});
+	$("#conditionBtn3").on("click", function () {
+		var deptid = $("#deptid3").val();
+		var jobid = $("#jobid3").val();
+		var salary = $("#salary3").val();
+		var hiredate = $("#hiredate3").val() || undefined; // undefined가 넘어갈 때 null로 넘어감
+		
+		console.log(deptid);
+		$.ajax({
+			url: "empCondition3.do", // ${path}/emp/empCondition2.do
 			data: {"deptid": deptid, "jobid": jobid, "salary": salary, "hiredate": hiredate},
 			success: function (result) {
 				$("#empListTable").html(result);

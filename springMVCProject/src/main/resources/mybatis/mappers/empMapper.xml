@@ -48,6 +48,29 @@
 		
 		order by employee_id desc
 	</select>
+	
+	<select id="selectByCondition3" resultType="empvo"
+		parameterType="map">
+		select * from employees where 1=1
+		<if test="deptid != null">
+			and department_id in
+			<foreach collection="deptid" item="dept" open="(" close=")" separator="," index="idx"> 
+			<!-- in (1, 2, 3)으로 만들어야 하기 때문에 open, close, seperator가 있는 것! --> 
+				#{dept} 
+			</foreach> 
+		</if> 
+		<if test="jobid != null and jobid != ''">
+			and job_id=#{jobid} 
+		</if>
+		<if test="salary != null and salary != 0">
+			and salary>=#{salary} 
+		</if>
+		<if test="hiredate != null">
+			and hire_date >= #{hiredate} 
+		</if>
+		
+		order by employee_id desc
+	</select>
 
 	<insert id="insert" parameterType="empvo">
 		insert into

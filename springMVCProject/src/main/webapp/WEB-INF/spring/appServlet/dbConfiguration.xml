@@ -2,8 +2,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
 	<!-- 방법 1: DriverManagerDataSource 이용 -->
 	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
@@ -20,13 +24,13 @@
 	<!-- 방법 3: Connection Pooling 이용 (JNDI) -->
 	<!-- DB의 id와 property의 ref 이름이 같아야 함 -->
 	<!-- context.xml에 resource로 정의한 id 이름을 jndi-name으로 가져오면 됨 -->
-	<jee:jndi-lookup id="dataSource"
+	<jee:jndi-lookup id="dataSourceOriginal"
 		jndi-name="jdbc/myoracle" resource-ref="true" />
 
-	<!-- sqlSessionFactory: 설정에 의해 sqlSession을 생성 --> 
+	<!-- sqlSessionFactory: 설정에 의해 sqlSession을 생성 -->
 	<bean id="sqlSessionFactory"
 		class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"></property>  <!-- DB의 id와 property의 ref 이름이 같아야 함 -->
+		<property name="dataSource" ref="dataSource2"></property>  <!-- DB의 id와 property의 ref 이름이 같아야 함 -->
 		<property name="configLocation"
 			value="classpath:mybatis/sqlMapConfig.xml" />
 		<property name="mapperLocations"
@@ -37,4 +41,39 @@
 		class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="sqlSessionFactory"></constructor-arg>
 	</bean>
+
+	<!-- day054: log 예쁘게 -->
+	<bean id="dataSource2"
+		class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="dataSourceOriginal" />
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="MULTI_LINE"></property>
+				<property name="sqlPrefix" value="[ SQL문장 ] "></property>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- day054: 트랜잭션 처리 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource2"></property>
+	</bean>
+	<tx:annotation-driven
+		transaction-manager="transactionManager" />
+
+	<!-- §transaction적용범위 지정 (advice) -->
+	<tx:advice id="txAdvice"
+		transaction-manager="transactionManager"> <!-- bean의 id와 동일 -->
+		<tx:attributes>
+			<tx:method name="*" /> <!--메서드별로 제약조건 별도설정 가능: 현재는 모든 메소드에 적용 -->
+		</tx:attributes>
+	</tx:advice>
+	<!-- §transaction pointcut지정 -->
+	<aop:config>
+		<aop:advisor advice-ref="txAdvice"
+			pointcut="execution(* transfer(..))" /> <!-- service의 함수 이름으로 설정 -->
+	</aop:config>
+	
+	
 </beans>

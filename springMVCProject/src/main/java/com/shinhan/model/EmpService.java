@@ -38,6 +38,9 @@ public class EmpService {
 	public List<EmpVO> selectByCondition2(Integer[] deptid, String jobid, Double salary, Date hiredate) {
 		return empDao.selectByCondition2(deptid, jobid, salary, hiredate);
 	}
+	public List<EmpVO> selectByCondition3(Integer[] deptid, String jobid, Double salary, Date hiredate) {
+		return empDao.selectByCondition3(deptid, jobid, salary, hiredate);
+	}
 
 //	public List<EmpVO> selectLAB() {
 //		List<EmpVO> emplist = empDao.selectLAB();

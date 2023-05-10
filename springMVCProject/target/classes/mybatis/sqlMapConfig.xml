@@ -6,7 +6,7 @@
 	<!-- null이 들어오면 자동으로 null로 설정해줌! (전체적으로 설정하지 않으면 null이 들어갈 값마다 mapper.xml에서 
 		설정해야 함! -->
 	<settings>
-		<setting name="logImpl" value="LOG4J" />
+		<setting name="logImpl" value="LOG4J" /> <!-- value: log4j.xml 파일의 이름 (대소문자 구분 X) -> 이 설정 파일에 의해 로그를 사용하겠다 -->
 		<setting name="jdbcTypeForNull" value="NULL" />
 	</settings>
 	<typeAliases>

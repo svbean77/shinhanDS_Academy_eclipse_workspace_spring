@@ -144,11 +144,16 @@ public class EmpController {
 		
 //		List<EmpVO> emplist = eService.selectByCondition2(0, "", 0.0);
 		logger.info("test");
-		List<EmpVO> emplist = eService.selectByCondition2(new Integer[] {0}, null, null, null);
+		List<EmpVO> emplist = eService.selectByCondition3(new Integer[] {0}, null, null, null);
 //		List<EmpVO> emplist = eService.selectAll();
 		logger.info(emplist.size() + "건");
 
 		model.addAttribute("empAll", emplist);
+		
+		logger.debug("정보: debug");
+		logger.info("정보: info");
+		logger.warn("정보: warn");
+		logger.error("정보: error");
 		
 		// ControllerAdvice 처리
 //		int a = 10 / 0;
@@ -195,13 +200,28 @@ public class EmpController {
 	}
 	@GetMapping("/empCondition2.do") // get 방식이면 GetMapping으로 적어도 됨! (PostMaiing도 존재)
 	// day053: 조건 조회 추가
-	public String selectByCondition2(@RequestParam("deptid[]")Integer[] deptid, String jobid, Double salary, Date hiredate, Model model) {
+	// Ajax 요청 시 배열이 오면 @RequestParam("deptid[]") Integer[] deptid => '배열'이라는 표시를 꼭 해줘야 함
+	// 일반 요청 시 배열이 오면 @RequestParam("deptid") Integer[] deptid
+	// 일반 요청 시 배열이 오면 Integer[] deptid
+	public String selectByCondition2(@RequestParam(value = "deptid[]", required = false)Integer[] deptid, String jobid, Double salary, Date hiredate, Model model) {
 		logger.info("deptid: " + deptid);
 		logger.info("jobid: " + jobid);
 		logger.info("salary: " + salary);
 		logger.info("hiredate: " + hiredate);
 //		Date date = hiredate == "" ? null : DateUtil.convertToDate(hiredate);
 		List<EmpVO> emplist = eService.selectByCondition2(deptid, jobid, salary, hiredate);
+		
+		model.addAttribute("empAll", emplist);	
+		
+		return "emp/empRetrieve";
+	}
+	@GetMapping("/empCondition3.do")
+	public String selectByCondition3(@RequestParam(value = "deptid[]", required = false)Integer[] deptid, String jobid, Double salary, Date hiredate, Model model) {
+		logger.info("deptid: " + deptid);
+		logger.info("jobid: " + jobid);
+		logger.info("salary: " + salary);
+		logger.info("hiredate: " + hiredate);
+		List<EmpVO> emplist = eService.selectByCondition3(deptid, jobid, salary, hiredate);
 		
 		model.addAttribute("empAll", emplist);	
 		

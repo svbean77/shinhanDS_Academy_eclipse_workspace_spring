@@ -10,6 +10,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.shinhan.vo.EmpVO;
@@ -17,6 +18,7 @@ import com.shinhan.vo.EmpVO;
 @Repository // Repository: Component + DAO(date access object)
 public class X_EmpDAO {
 	@Autowired // type이 같으면 injection
+	@Qualifier("dataSourceOriginal")
 	DataSource ds; // (org.springframework.jdbc.datasource.DriverManagerDataSource)
 	Connection conn;
 	PreparedStatement st;

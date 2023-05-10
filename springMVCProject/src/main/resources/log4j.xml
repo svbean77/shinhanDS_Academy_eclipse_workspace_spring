@@ -1,29 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+<log4j:configuration
+	xmlns:log4j="http://jakarta.apache.org/log4j/">
 
 	<!-- Appenders -->
-	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+	<appender name="console"
+		class="org.apache.log4j.ConsoleAppender"> <!--class를 ConsoleAppender로 설정했기 때문에 console에 출력되는 것 -->
 		<param name="Target" value="System.out" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
+			<param name="ConversionPattern" value="%-5p: %c - %m%n" /> <!-- 출력 형태 설정 (숫자 몇 자리 이런거 했었던 것처럼) -->
 		</layout>
 	</appender>
-	
+	<!-- DailyFile Appenders: console 말고 파일에 저장할 수 있음 (근데 그냥 계속 콘솔로 출력할거야) -->
+	<appender name="dailyFileAppender"
+		class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="C:\\spring\\logs\\output.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="DatePattern" value="'.'yyyy-MM-dd" />
+			<param name="ConversionPattern"
+				value="[%d{HH:mm:ss}][%-5p](%F:%L)-%m%n" />
+		</layout>
+	</appender>
+
+
 	<!-- Application Loggers -->
-	<logger name="com.shinhan.education">
+	<logger name="com.shinhan.education"> <!-- 이렇게 작성하면 모든 패키지에서 로그가 뜸 -->
 		<level value="info" />
 	</logger>
-	
+
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
 		<level value="info" />
 	</logger>
-	
+
 	<logger name="org.springframework.beans">
 		<level value="info" />
 	</logger>
-	
+
 	<logger name="org.springframework.context">
 		<level value="info" />
 	</logger>
@@ -31,11 +45,30 @@
 	<logger name="org.springframework.web">
 		<level value="info" />
 	</logger>
+	<!-- sql 문장과 결과 출력하기 위해 logger 추가 -->
+	<logger name="jdbc.sqlonly" additivity="false">
+		<level value="info" />
+		<appender-ref ref="console" />
+	</logger>
+	<!-- resetset, resetsettable을 off시킴 -> sql 문장만 출력되도록 함 -->
+	<logger name="jdbc.resultset">
+		<level value="off"></level>
+	</logger>
+	<logger name="jdbc.resultsettable">
+		<level value="off"></level>
+	</logger>
+	<logger name="jdbc.audit">
+		<level value="off"></level>
+	</logger>
+	<logger name="jdbc.connection">
+		<level value="off"></level>
+	</logger>
 
 	<!-- Root Logger -->
 	<root>
-		<priority value="info" />
-		<appender-ref ref="console" />
+		<priority value="info" /> <!-- debug, info, warn, error, fatal -->
+		<appender-ref ref="console" /> <!-- dailyFileAppender로 바꾸면 파일로 저장됨 -->
 	</root>
-	
+
+
 </log4j:configuration>

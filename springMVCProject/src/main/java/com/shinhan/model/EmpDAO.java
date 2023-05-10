@@ -14,6 +14,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.shinhan.util.OracleUtil;
@@ -22,6 +23,7 @@ import com.shinhan.vo.EmpVO;
 @Repository // @Component + DAO
 public class EmpDAO {
 	@Autowired // 타입이 같으면 자동 주입: XML 파일에 bean으로 등록된 bean을 만들어 자동 주입)
+	@Qualifier("dataSourceOriginal")
 	DataSource ds;
 	
 	Connection conn; 
